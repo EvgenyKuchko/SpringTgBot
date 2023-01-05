@@ -3,6 +3,7 @@ package io.project.SpringTgBot.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "words")
@@ -13,4 +14,6 @@ public class Word {
     private long id;
     private String english;
     private String russian;
+    @ManyToMany(mappedBy = "words")
+    private Set<User> users;
 }
