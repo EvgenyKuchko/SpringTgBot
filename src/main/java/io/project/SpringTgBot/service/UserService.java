@@ -38,4 +38,10 @@ public class UserService {
         Word word = w.get();
         return !word.getEnglish().isEmpty();
     }
+
+    public void addNewWordToDictionary(long chatId, Word word) {
+        User user = userRepository.getUserById(chatId);
+        var words = user.getWords();
+        words.add(word);
+    }
 }

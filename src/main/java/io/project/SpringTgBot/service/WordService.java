@@ -27,4 +27,9 @@ public class WordService {
         }
         return result;
     }
+
+    @Transactional
+    public Word getWordFromBotDictionary(String english, String russian) {
+        return wordRepository.findWordByFields(english, russian);
+    }
 }
