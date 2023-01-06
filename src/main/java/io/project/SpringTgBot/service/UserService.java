@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -23,7 +22,6 @@ public class UserService {
             User user = new User();
             user.setId(chatId);
             user.setFirstName(name);
-            user.setWords(new HashSet<>());
             userRepository.save(user);
         }
     }
@@ -39,9 +37,25 @@ public class UserService {
         return !word.getEnglish().isEmpty();
     }
 
+    @Transactional
     public void addNewWordToDictionary(long chatId, Word word) {
         User user = userRepository.getUserById(chatId);
         var words = user.getWords();
         words.add(word);
+    }
+
+    @Transactional
+    public String getAllWords(long chatId) {
+        User user = userRepository.getUserById(chatId);
+        String words = "List of your words:\n";
+        List<Word> list = user.getWords();
+        if(!list.isEmpty()) {
+            for (Word w : list) {
+                words += "\n" + w.getEnglish() + " - " + w.getRussian();
+            }
+        }else {
+            words += "Your dictionary is empty";
+        }
+        return words;
     }
 }

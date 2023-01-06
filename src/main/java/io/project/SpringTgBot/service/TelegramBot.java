@@ -40,6 +40,9 @@ public class TelegramBot extends TelegramLongPollingBot {
             if(message.equals("/start")) {
                 userService.addNewUser(chatId, firstname);
                 startCommandAnswer(chatId, firstname);
+            }else if(message.equals("/get")) {
+                var answer = userService.getAllWords(chatId);
+                sendAnswer(chatId, answer);
             }
         }
     }
