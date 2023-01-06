@@ -30,6 +30,14 @@ public class WordService {
 
     @Transactional
     public Word getWordFromBotDictionary(String english, String russian) {
-        return wordRepository.findWordByFields(english, russian);
+        return wordRepository.findByEnglishAndRussian(english, russian);
+    }
+
+    @Transactional
+    public void addNewWordToDictionary(String english, String russian) {
+        Word word = new Word();
+        word.setEnglish(english);
+        word.setRussian(russian);
+        wordRepository.save(word);
     }
 }
