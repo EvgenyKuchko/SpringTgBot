@@ -1,6 +1,7 @@
 package io.project.SpringTgBot.service;
 
 import io.project.SpringTgBot.config.BotConfig;
+import io.project.SpringTgBot.exception.BadWordFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -38,7 +39,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
-            String message = update.getMessage().getText();
+            var message = update.getMessage().getText();
             var firstname = update.getMessage().getChat().getFirstName();
             var chatId = update.getMessage().getChatId();
 
@@ -49,9 +50,13 @@ public class TelegramBot extends TelegramLongPollingBot {
                 var answer = userService.getAllWords(chatId);
                 sendAnswer(chatId, answer);
             } else if (message.contains("/add")) {
-                String[] words = parseMessage(message, ADD_COMMAND);
-                String answer = addNewWordToDictionary(words, chatId);
-                sendAnswer(chatId, answer);
+                try {
+                    var words = parseMessage(message, ADD_COMMAND);
+                    var answer = addNewWordToDictionary(words, chatId);
+                    sendAnswer(chatId, answer);
+                } catch (BadWordFormat ex) {
+                    sendAnswer(chatId, ex.getMessage());
+                }
             }
         }
     }
@@ -72,17 +77,25 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-    private String[] parseMessage(String message, String command) {
+    private String[] parseMessage(String message, String command) throws BadWordFormat {
         message = message.toLowerCase()
                 .replaceAll(" ", "")
-                .replace(command, "")
-                .replace("(", "")
-                .replace(")", "");
+                .replace(command, "");
         String[] words = message.split("-");
-        for (String s : words) {
-            System.out.println(s);
-        }
+        checkWords(words);
         return words;
+    }
+
+    public String[] checkWords(String[] words) throws BadWordFormat {
+        if (words[0].matches("[a-z]+") && words[1].matches("[а-я]+")) {
+            return words;
+        } else if (words[1].matches("[a-z]+") && words[0].matches("[а-я]+")) {
+            String x = words[0];
+            words[0] = words[1];
+            words[1] = x;
+            return words;
+        }
+        throw new BadWordFormat("Wrong format for entering words. Check if the command with the pattern is entered correctly and try again.");
     }
 
     private String addNewWordToDictionary(String[] words, long chatId) {
