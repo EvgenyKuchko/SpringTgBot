@@ -15,6 +15,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     final BotConfig botConfig;
 
     static final String ADD_COMMAND = "/add";
+    static final String REMOVE_COMMAND = "/remove";
 
     @Autowired
     private UserService userService;
@@ -55,6 +56,14 @@ public class TelegramBot extends TelegramLongPollingBot {
                     var answer = addNewWordToDictionary(words, chatId);
                     sendAnswer(chatId, answer);
                 } catch (BadWordFormat ex) {
+                    sendAnswer(chatId, ex.getMessage());
+                }
+            } else if(message.contains("/remove")) {
+                try {
+                    var words = parseMessage(message, REMOVE_COMMAND);
+                    var answer = removeWordFromUserDictionary(words, chatId);
+                    sendAnswer(chatId, answer);
+                }catch (BadWordFormat ex) {
                     sendAnswer(chatId, ex.getMessage());
                 }
             }
@@ -109,6 +118,15 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
         wordService.addNewWordToDictionary(words[0], words[1]);
         userService.addNewWordToDictionary(chatId, wordService.getWordFromBotDictionary(words[0], words[1]));
+        return answer;
+    }
+
+    private String removeWordFromUserDictionary(String[] words, long chatId) {
+        String answer = "The word was successfully removed";
+        if (!userService.isWordInUserDictionary(chatId, words[0], words[1])) {
+            return "There is no such word in your dictionary.";
+        }
+        userService.removeWord(chatId, words[0], words[1]);
         return answer;
     }
 }

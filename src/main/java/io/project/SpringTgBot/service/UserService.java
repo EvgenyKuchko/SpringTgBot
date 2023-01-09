@@ -59,4 +59,12 @@ public class UserService {
         }
         return words;
     }
+
+    @Transactional
+    public void removeWord(long chatId, String english, String russian) {
+        User user = userRepository.getUserById(chatId);
+        List<Word> words = user.getWords();
+        words.removeIf(w -> w.getEnglish().equals(english) && w.getRussian().equals(russian));
+        userRepository.save(user);
+    }
 }
