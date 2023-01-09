@@ -58,12 +58,12 @@ public class TelegramBot extends TelegramLongPollingBot {
                 } catch (BadWordFormat ex) {
                     sendAnswer(chatId, ex.getMessage());
                 }
-            } else if(message.contains("/remove")) {
+            } else if (message.contains("/remove")) {
                 try {
                     var words = parseMessage(message, REMOVE_COMMAND);
                     var answer = removeWordFromUserDictionary(words, chatId);
                     sendAnswer(chatId, answer);
-                }catch (BadWordFormat ex) {
+                } catch (BadWordFormat ex) {
                     sendAnswer(chatId, ex.getMessage());
                 }
             }
