@@ -49,7 +49,7 @@ public class UserService {
     @Transactional
     public String getAllWords(long chatId) {
         User user = userRepository.getUserById(chatId);
-        String words = "List of your words:\n";
+        String words = ":book: List of your words:\n";
         List<Word> list = user.getWords();
         if (!list.isEmpty()) {
             for (Word w : list) {

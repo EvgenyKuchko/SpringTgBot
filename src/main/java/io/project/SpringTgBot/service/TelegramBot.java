@@ -23,6 +23,12 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private static final String ADD_COMMAND = "/add";
     private static final String REMOVE_COMMAND = "/remove";
+    private static final String HELP = ":robot_face: This bot knows the following commands :\n\n" +
+            "'/get' with this command you will get a list of all the words in your dictionary \n\n" +
+            "'/add play - играть'  with this command you can add a new word to your dictionary \n\n" +
+            "'/remove play - играть' with this command you can remove a word from your dictionary \n\n" +
+            "'/quiz' with this command the bot will create a quiz consisting of your vocabulary words with variants of answers\n\n" +
+            "'/help' with this command you can get information about bot commands";
 
     private static final int NUM_OF_QUESTIONS = 5;
     private static String result;
@@ -60,6 +66,8 @@ public class TelegramBot extends TelegramLongPollingBot {
             if (message.equals("/start")) {
                 userService.addNewUser(chatId, firstname);
                 startCommandAnswer(chatId, firstname);
+            } else if (message.equals("/help")) {
+                sendAnswer(chatId, HELP);
             } else if (message.equals("/get")) {
                 var answer = userService.getAllWords(chatId);
                 sendAnswer(chatId, answer);
@@ -80,7 +88,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                     sendAnswer(chatId, ex.getMessage());
                 }
             } else if (message.equals("/quiz")) {
-                if(userService.getSizeOfDictionary(chatId) < 5) {
+                if (userService.getSizeOfDictionary(chatId) < 5) {
                     sendAnswer(chatId, "Your dictionary is too small. You need at least 5 words to complete the test.");
                 } else {
                     result = "";
@@ -92,6 +100,8 @@ public class TelegramBot extends TelegramLongPollingBot {
                     sendQuestion(chatId, questionWord, variants);
                     countOfQuestion++;
                 }
+            } else {
+                sendAnswer(chatId, "The command is not supported.:sweat: Use the command '/help' to find out all available commands.");
             }
         } else if (update.hasCallbackQuery()) {
             //получаем id сообщение которое будет изменено
@@ -102,9 +112,9 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             if (answerIsCorrect(english, callBackData)) {
                 countOfCorrectAnswers++;
-                result += EmojiParser.parseToUnicode(english + " - " + callBackData + "  " + ":white_check_mark:\n");
+                result += english + " - " + callBackData + "  " + ":white_check_mark:\n";
             } else {
-                result += EmojiParser.parseToUnicode(english + " - " + callBackData + "  " + ":x:\n");
+                result += english + " - " + callBackData + "  " + ":x:\n";
             }
 
             if (countOfQuestion < NUM_OF_QUESTIONS) {
@@ -116,16 +126,16 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-
     private void startCommandAnswer(long chatId, String name) {
-        var answer = "Hello, " + name + "! Welcome to Dictionary Bot.";
+        var answer = "Hello, " + name + "! Welcome to Dictionary Bot.:wave:\n\n" +
+                HELP;
         sendAnswer(chatId, answer);
     }
 
     private void sendAnswer(long chatId, String answer) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(String.valueOf(chatId));
-        sendMessage.setText(answer);
+        sendMessage.setText(EmojiParser.parseToUnicode(answer));
         try {
             execute(sendMessage);
         } catch (TelegramApiException ex) {
@@ -142,14 +152,14 @@ public class TelegramBot extends TelegramLongPollingBot {
         return words;
     }
 
-    public String[] checkWords(String[] words) throws BadWordFormat {
+    public void checkWords(String[] words) throws BadWordFormat {
         if (words[0].matches("[a-z]+") && words[1].matches("[а-я]+")) {
-            return words;
+            return;
         } else if (words[1].matches("[a-z]+") && words[0].matches("[а-я]+")) {
-            String x = words[0];
+            var x = words[0];
             words[0] = words[1];
             words[1] = x;
-            return words;
+            return;
         }
         throw new BadWordFormat("Wrong format for entering words. Check if the command with the pattern is entered correctly and try again.");
     }
@@ -157,6 +167,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     private String addNewWordToDictionary(String[] words, long chatId) {
         String answer = "The word was successfully added";
         if (userService.isWordInUserDictionary(chatId, words[0], words[1])) {
+            //throw new ex
             return "This word is already exist in your dictionary";
         }
         if (wordService.isWordInBotDictionary(words[0], words[1])) {
@@ -247,8 +258,8 @@ public class TelegramBot extends TelegramLongPollingBot {
     private void sendResultOfQuiz(long chatId, int messageId) {
         EditMessageText message = new EditMessageText();
         message.setChatId(String.valueOf(chatId));
-        message.setText("Number of correct answers: " + countOfCorrectAnswers + " out of " + NUM_OF_QUESTIONS + "\n\n" +
-                result);
+        message.setText(EmojiParser.parseToUnicode("Number of correct answers: " + countOfCorrectAnswers + " out of " + NUM_OF_QUESTIONS + "\n\n" +
+                result));
         message.setMessageId(messageId);
         try {
             execute(message);
