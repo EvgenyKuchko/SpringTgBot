@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 @Service
 public class UserService {
@@ -76,5 +75,11 @@ public class UserService {
         List<Word> words = user.getWords();
         Collections.shuffle(words);
         return words.subList(0, 5);
+    }
+
+    @Transactional
+    public int getSizeOfDictionary(long chatId) {
+        User user = userRepository.getUserById(chatId);
+        return user.getWords().size();
     }
 }

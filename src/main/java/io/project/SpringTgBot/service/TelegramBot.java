@@ -1,5 +1,6 @@
 package io.project.SpringTgBot.service;
 
+import com.vdurmont.emoji.EmojiParser;
 import io.project.SpringTgBot.config.BotConfig;
 import io.project.SpringTgBot.exception.BadWordFormat;
 import io.project.SpringTgBot.model.Word;
@@ -23,9 +24,10 @@ public class TelegramBot extends TelegramLongPollingBot {
     private static final String ADD_COMMAND = "/add";
     private static final String REMOVE_COMMAND = "/remove";
 
+    private static final int NUM_OF_QUESTIONS = 5;
+    private static String result;
     private static List<Word> wordsForQuiz;
     private static int countOfCorrectAnswers;
-    private static final int NUM_OF_QUESTIONS = 5;
     private static int countOfQuestion;
 
     @Autowired
@@ -78,13 +80,18 @@ public class TelegramBot extends TelegramLongPollingBot {
                     sendAnswer(chatId, ex.getMessage());
                 }
             } else if (message.equals("/quiz")) {
-                countOfQuestion = 0;
-                countOfCorrectAnswers = 0;
-                wordsForQuiz = new LinkedList<>(userService.getWordsForQuiz(chatId));
-                var questionWord = getQuestionWord();
-                var variants = getVariants(questionWord);
-                sendQuestion(chatId, questionWord, variants);
-                countOfQuestion ++;
+                if(userService.getSizeOfDictionary(chatId) < 5) {
+                    sendAnswer(chatId, "Your dictionary is too small. You need at least 5 words to complete the test.");
+                } else {
+                    result = "";
+                    countOfQuestion = 0;
+                    countOfCorrectAnswers = 0;
+                    wordsForQuiz = new LinkedList<>(userService.getWordsForQuiz(chatId));
+                    var questionWord = getQuestionWord();
+                    var variants = getVariants(questionWord);
+                    sendQuestion(chatId, questionWord, variants);
+                    countOfQuestion++;
+                }
             }
         } else if (update.hasCallbackQuery()) {
             //получаем id сообщение которое будет изменено
@@ -95,9 +102,12 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             if (answerIsCorrect(english, callBackData)) {
                 countOfCorrectAnswers++;
+                result += EmojiParser.parseToUnicode(english + " - " + callBackData + "  " + ":white_check_mark:\n");
+            } else {
+                result += EmojiParser.parseToUnicode(english + " - " + callBackData + "  " + ":x:\n");
             }
 
-            if(countOfQuestion < NUM_OF_QUESTIONS) {
+            if (countOfQuestion < NUM_OF_QUESTIONS) {
                 nextQuestion(idOfChat, messageId);
                 countOfQuestion++;
             } else {
@@ -185,7 +195,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private String[] shuffleVariants(String[] arr) {
         Random rnd = new Random();
-        for(int i = 0; i < arr.length; i++) {
+        for (int i = 0; i < arr.length; i++) {
             int index = rnd.nextInt(i + 1);
             var a = arr[index];
             arr[index] = arr[i];
@@ -198,17 +208,8 @@ public class TelegramBot extends TelegramLongPollingBot {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
         message.setText(questionWord.getEnglish());
-        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
-        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
-        List<InlineKeyboardButton> row = new ArrayList<>();
-        for (String variant : variants) {
-            var button = new InlineKeyboardButton();
-            button.setText(variant);
-            button.setCallbackData(variant);
-            row.add(button);
-        }
-        rows.add(row);
-        keyboard.setKeyboard(rows);
+
+        InlineKeyboardMarkup keyboard = createKeyboard(variants);
         message.setReplyMarkup(keyboard);
         try {
             execute(message);
@@ -234,17 +235,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         message.setText(questionWord.getEnglish());
         message.setMessageId(messageId);
 
-        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
-        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
-        List<InlineKeyboardButton> row = new ArrayList<>();
-        for (String variant : variants) {
-            var button = new InlineKeyboardButton();
-            button.setText(variant);
-            button.setCallbackData(variant);
-            row.add(button);
-        }
-        rows.add(row);
-        keyboard.setKeyboard(rows);
+        InlineKeyboardMarkup keyboard = createKeyboard(variants);
         message.setReplyMarkup(keyboard);
         try {
             execute(message);
@@ -256,12 +247,28 @@ public class TelegramBot extends TelegramLongPollingBot {
     private void sendResultOfQuiz(long chatId, int messageId) {
         EditMessageText message = new EditMessageText();
         message.setChatId(String.valueOf(chatId));
-        message.setText("Number of correct answers: " + countOfCorrectAnswers + " out of " + NUM_OF_QUESTIONS);
+        message.setText("Number of correct answers: " + countOfCorrectAnswers + " out of " + NUM_OF_QUESTIONS + "\n\n" +
+                result);
         message.setMessageId(messageId);
         try {
             execute(message);
         } catch (TelegramApiException ex) {
             ex.printStackTrace();
         }
+    }
+
+    private InlineKeyboardMarkup createKeyboard(String[] variants) {
+        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+        List<InlineKeyboardButton> row = new ArrayList<>();
+        for (String variant : variants) {
+            var button = new InlineKeyboardButton();
+            button.setText(variant);
+            button.setCallbackData(variant);
+            row.add(button);
+        }
+        rows.add(row);
+        keyboard.setKeyboard(rows);
+        return keyboard;
     }
 }
