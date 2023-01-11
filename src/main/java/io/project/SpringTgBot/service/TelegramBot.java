@@ -7,9 +7,12 @@ import io.project.SpringTgBot.model.Word;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
+import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -44,6 +47,15 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     public TelegramBot(BotConfig botConfig) {
         this.botConfig = botConfig;
+        List<BotCommand> commands = new ArrayList<>();
+        commands.add(new BotCommand("/get", "get your words"));
+        commands.add(new BotCommand("/quiz", "take a quiz"));
+        commands.add(new BotCommand("/help", "information about commands"));
+        try{
+            this.execute(new SetMyCommands(commands, new BotCommandScopeDefault(), null));
+        } catch (TelegramApiException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
