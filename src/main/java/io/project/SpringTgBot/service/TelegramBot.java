@@ -2,20 +2,31 @@ package io.project.SpringTgBot.service;
 
 import io.project.SpringTgBot.config.BotConfig;
 import io.project.SpringTgBot.exception.BadWordFormat;
+import io.project.SpringTgBot.model.Word;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import java.util.*;
 
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
 
     final BotConfig botConfig;
 
-    static final String ADD_COMMAND = "/add";
-    static final String REMOVE_COMMAND = "/remove";
+    private static final String ADD_COMMAND = "/add";
+    private static final String REMOVE_COMMAND = "/remove";
+
+    private static List<Word> wordsForQuiz;
+    private static int countOfCorrectAnswers;
+    private static final int NUM_OF_QUESTIONS = 5;
+    private static int countOfQuestion;
 
     @Autowired
     private UserService userService;
@@ -66,9 +77,35 @@ public class TelegramBot extends TelegramLongPollingBot {
                 } catch (BadWordFormat ex) {
                     sendAnswer(chatId, ex.getMessage());
                 }
+            } else if (message.equals("/quiz")) {
+                countOfQuestion = 0;
+                countOfCorrectAnswers = 0;
+                wordsForQuiz = new LinkedList<>(userService.getWordsForQuiz(chatId));
+                var questionWord = getQuestionWord();
+                var variants = getVariants(questionWord);
+                sendQuestion(chatId, questionWord, variants);
+                countOfQuestion ++;
+            }
+        } else if (update.hasCallbackQuery()) {
+            //получаем id сообщение которое будет изменено
+            var callBackData = update.getCallbackQuery().getData();
+            var english = update.getCallbackQuery().getMessage().getText();
+            var messageId = update.getCallbackQuery().getMessage().getMessageId();
+            var idOfChat = update.getCallbackQuery().getMessage().getChatId();
+
+            if (answerIsCorrect(english, callBackData)) {
+                countOfCorrectAnswers++;
+            }
+
+            if(countOfQuestion < NUM_OF_QUESTIONS) {
+                nextQuestion(idOfChat, messageId);
+                countOfQuestion++;
+            } else {
+                sendResultOfQuiz(idOfChat, messageId);
             }
         }
     }
+
 
     private void startCommandAnswer(long chatId, String name) {
         var answer = "Hello, " + name + "! Welcome to Dictionary Bot.";
@@ -128,5 +165,103 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
         userService.removeWord(chatId, words[0], words[1]);
         return answer;
+    }
+
+    private Word getQuestionWord() {
+        return wordsForQuiz.get(countOfQuestion);
+    }
+
+    private String[] getVariants(Word questionWord) {
+        var words = new ArrayList<>(wordsForQuiz);
+        words.remove(questionWord);
+        Collections.shuffle(words);
+        String[] variants = new String[3];
+        for (int i = 0; i < 2; i++) {
+            variants[i] = words.get(i).getRussian();
+        }
+        variants[2] = questionWord.getRussian();
+        return shuffleVariants(variants);
+    }
+
+    private String[] shuffleVariants(String[] arr) {
+        Random rnd = new Random();
+        for(int i = 0; i < arr.length; i++) {
+            int index = rnd.nextInt(i + 1);
+            var a = arr[index];
+            arr[index] = arr[i];
+            arr[i] = a;
+        }
+        return arr;
+    }
+
+    private void sendQuestion(long chatId, Word questionWord, String[] variants) {
+        SendMessage message = new SendMessage();
+        message.setChatId(String.valueOf(chatId));
+        message.setText(questionWord.getEnglish());
+        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+        List<InlineKeyboardButton> row = new ArrayList<>();
+        for (String variant : variants) {
+            var button = new InlineKeyboardButton();
+            button.setText(variant);
+            button.setCallbackData(variant);
+            row.add(button);
+        }
+        rows.add(row);
+        keyboard.setKeyboard(rows);
+        message.setReplyMarkup(keyboard);
+        try {
+            execute(message);
+        } catch (TelegramApiException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private boolean answerIsCorrect(String english, String answer) {
+        for (Word w : wordsForQuiz) {
+            if (w.getEnglish().equals(english) && w.getRussian().equals(answer)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void nextQuestion(long chatId, int messageId) {
+        var questionWord = getQuestionWord();
+        var variants = getVariants(questionWord);
+        EditMessageText message = new EditMessageText();
+        message.setChatId(String.valueOf(chatId));
+        message.setText(questionWord.getEnglish());
+        message.setMessageId(messageId);
+
+        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+        List<InlineKeyboardButton> row = new ArrayList<>();
+        for (String variant : variants) {
+            var button = new InlineKeyboardButton();
+            button.setText(variant);
+            button.setCallbackData(variant);
+            row.add(button);
+        }
+        rows.add(row);
+        keyboard.setKeyboard(rows);
+        message.setReplyMarkup(keyboard);
+        try {
+            execute(message);
+        } catch (TelegramApiException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void sendResultOfQuiz(long chatId, int messageId) {
+        EditMessageText message = new EditMessageText();
+        message.setChatId(String.valueOf(chatId));
+        message.setText("Number of correct answers: " + countOfCorrectAnswers + " out of " + NUM_OF_QUESTIONS);
+        message.setMessageId(messageId);
+        try {
+            execute(message);
+        } catch (TelegramApiException ex) {
+            ex.printStackTrace();
+        }
     }
 }

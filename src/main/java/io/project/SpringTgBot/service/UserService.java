@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class UserService {
@@ -66,5 +68,13 @@ public class UserService {
         List<Word> words = user.getWords();
         words.removeIf(w -> w.getEnglish().equals(english) && w.getRussian().equals(russian));
         userRepository.save(user);
+    }
+
+    @Transactional
+    public List<Word> getWordsForQuiz(long chatId) {
+        User user = userRepository.getUserById(chatId);
+        List<Word> words = user.getWords();
+        Collections.shuffle(words);
+        return words.subList(0, 5);
     }
 }
