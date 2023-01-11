@@ -51,7 +51,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         commands.add(new BotCommand("/get", "get your words"));
         commands.add(new BotCommand("/quiz", "take a quiz"));
         commands.add(new BotCommand("/help", "information about commands"));
-        try{
+        try {
             this.execute(new SetMyCommands(commands, new BotCommandScopeDefault(), null));
         } catch (TelegramApiException ex) {
             ex.printStackTrace();
