@@ -165,13 +165,15 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     public void checkWords(String[] words) throws BadWordFormat {
-        if (words[0].matches("[a-z]+") && words[1].matches("[а-я]+")) {
-            return;
-        } else if (words[1].matches("[a-z]+") && words[0].matches("[а-я]+")) {
-            var x = words[0];
-            words[0] = words[1];
-            words[1] = x;
-            return;
+        if (words.length >= 2) {
+            if (words[0].matches("[a-z]+") && words[1].matches("[а-я]+")) {
+                return;
+            } else if (words[1].matches("[a-z]+") && words[0].matches("[а-я]+")) {
+                var x = words[0];
+                words[0] = words[1];
+                words[1] = x;
+                return;
+            }
         }
         throw new BadWordFormat("Wrong format for entering words. Check if the command with the pattern is entered correctly and try again.");
     }
