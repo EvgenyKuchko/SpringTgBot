@@ -24,8 +24,12 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     final BotConfig botConfig;
 
+    private static final String START_COMMAND = "/start";
     private static final String ADD_COMMAND = "/add";
     private static final String REMOVE_COMMAND = "/remove";
+    private static final String HELP_COMMAND = "/help";
+    private static final String GET_COMMAND = "/get";
+    private static final String QUIZ_COMMAND = "/quiz";
     private static final String HELP = ":robot_face: This bot knows the following commands :\n\n" +
             "'/get' with this command you will get a list of all the words in your dictionary \n\n" +
             "'/add play - играть'  with this command you can add a new word to your dictionary \n\n" +
@@ -75,15 +79,15 @@ public class TelegramBot extends TelegramLongPollingBot {
             var firstname = update.getMessage().getChat().getFirstName();
             var chatId = update.getMessage().getChatId();
 
-            if (message.equals("/start")) {
+            if (message.equals(START_COMMAND)) {
                 userService.addNewUser(chatId, firstname);
                 startCommandAnswer(chatId, firstname);
-            } else if (message.equals("/help")) {
+            } else if (message.equals(HELP_COMMAND)) {
                 sendAnswer(chatId, HELP);
-            } else if (message.equals("/get")) {
+            } else if (message.equals(GET_COMMAND)) {
                 var answer = userService.getAllWords(chatId);
                 sendAnswer(chatId, answer);
-            } else if (message.contains("/add")) {
+            } else if (message.contains(ADD_COMMAND)) {
                 try {
                     var words = parseMessage(message, ADD_COMMAND);
                     var answer = addNewWordToDictionary(words, chatId);
@@ -91,7 +95,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 } catch (BadWordFormat ex) {
                     sendAnswer(chatId, ex.getMessage());
                 }
-            } else if (message.contains("/remove")) {
+            } else if (message.contains(REMOVE_COMMAND)) {
                 try {
                     var words = parseMessage(message, REMOVE_COMMAND);
                     var answer = removeWordFromUserDictionary(words, chatId);
@@ -99,7 +103,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 } catch (BadWordFormat ex) {
                     sendAnswer(chatId, ex.getMessage());
                 }
-            } else if (message.equals("/quiz")) {
+            } else if (message.equals(QUIZ_COMMAND)) {
                 if (userService.getSizeOfDictionary(chatId) < 5) {
                     sendAnswer(chatId, "Your dictionary is too small. You need at least 5 words to complete the test.");
                 } else {
