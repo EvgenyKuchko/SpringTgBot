@@ -2,10 +2,12 @@ package io.project.SpringTgBot.service;
 
 import io.project.SpringTgBot.model.Word;
 import io.project.SpringTgBot.repository.WordRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 public class WordService {
 
@@ -15,13 +17,16 @@ public class WordService {
     @Transactional
     public boolean isWordInBotDictionary(String english, String russian) {
         var words = wordRepository.findAllByEnglish(english);
+        log.info("Check is word(" + english + " - " + russian + ") in the bot dictionary or not");
         if (words.isEmpty()) {
+            log.info("Word isn't in the bot dictionary");
             return false;
         }
         var result = false;
         for (Word w : words) {
             if (w.getRussian().equals(russian)) {
                 result = true;
+                log.info("Word is in the bot dictionary");
                 break;
             }
         }
@@ -30,6 +35,7 @@ public class WordService {
 
     @Transactional
     public Word getWordFromBotDictionary(String english, String russian) {
+        log.info("Get word(" + english + " - " + russian + ") from bot dictionary");
         return wordRepository.findByEnglishAndRussian(english, russian);
     }
 
@@ -39,5 +45,6 @@ public class WordService {
         word.setEnglish(english);
         word.setRussian(russian);
         wordRepository.save(word);
+        log.info("Word: " + english + " - " + russian + " added in the dictionary");
     }
 }

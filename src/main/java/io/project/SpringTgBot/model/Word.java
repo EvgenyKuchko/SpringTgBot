@@ -15,6 +15,6 @@ public class Word {
     private long id;
     private String english;
     private String russian;
-    @ManyToMany(mappedBy = "words")
+    @ManyToMany(mappedBy = "words", fetch = FetchType.EAGER)
     private List<User> users = new LinkedList<>();
 }
