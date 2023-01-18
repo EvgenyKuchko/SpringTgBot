@@ -1,0 +1,72 @@
+18-01-2023 12:54:14.133 [main] INFO  i.p.S.SpringTgBotApplication.logStarting - Starting SpringTgBotApplication using Java 11.0.12 on MasterComputers with PID 22392 (D:\project\SpringTgBot\target\classes started by User in D:\project\SpringTgBot)
+18-01-2023 12:54:14.146 [main] INFO  i.p.S.SpringTgBotApplication.logStartupProfileInfo - No active profile set, falling back to 1 default profile: "default"
+18-01-2023 12:54:16.684 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate.registerRepositoriesIn - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+18-01-2023 12:54:16.853 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate.registerRepositoriesIn - Finished Spring Data repository scanning in 145 ms. Found 2 JPA repository interfaces.
+18-01-2023 12:54:17.836 [main] INFO  o.h.jpa.internal.util.LogHelper.logPersistenceUnitInformation - HHH000204: Processing PersistenceUnitInfo [name: default]
+18-01-2023 12:54:17.945 [main] INFO  org.hibernate.Version.logVersion - HHH000412: Hibernate ORM core version 5.6.14.Final
+18-01-2023 12:54:18.299 [main] INFO  o.h.annotations.common.Version.<clinit> - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+18-01-2023 12:54:18.683 [main] INFO  com.zaxxer.hikari.HikariDataSource.getConnection - HikariPool-1 - Starting...
+18-01-2023 12:54:19.512 [main] INFO  com.zaxxer.hikari.HikariDataSource.getConnection - HikariPool-1 - Start completed.
+18-01-2023 12:54:19.548 [main] INFO  org.hibernate.dialect.Dialect.<init> - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+18-01-2023 12:54:21.846 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator.initiateService - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+18-01-2023 12:54:21.874 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean.buildNativeEntityManagerFactory - Initialized JPA EntityManagerFactory for persistence unit 'default'
+18-01-2023 12:54:24.820 [main] INFO  i.p.S.SpringTgBotApplication.logStarted - Started SpringTgBotApplication in 13.824 seconds (JVM running for 19.508)
+18-01-2023 12:54:41.654 [d1ct1onary_bot Telegram Executor] INFO  i.p.SpringTgBot.service.TelegramBot.onUpdateReceived - Message from Yauheni, with text: /get
+18-01-2023 12:54:42.350 [d1ct1onary_bot Telegram Executor] INFO  i.p.SpringTgBot.service.UserService.getAllWords - Get all words from Yauheni's dictionary
+18-01-2023 12:54:42.719 [d1ct1onary_bot Telegram Executor] INFO  i.p.SpringTgBot.service.TelegramBot.sendAnswer - Send answer
+18-01-2023 12:55:32.177 [main] INFO  i.p.S.SpringTgBotApplication.logStarting - Starting SpringTgBotApplication using Java 11.0.12 on MasterComputers with PID 1912 (D:\project\SpringTgBot\target\classes started by User in D:\project\SpringTgBot)
+18-01-2023 12:55:32.187 [main] INFO  i.p.S.SpringTgBotApplication.logStartupProfileInfo - No active profile set, falling back to 1 default profile: "default"
+18-01-2023 12:55:34.425 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate.registerRepositoriesIn - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+18-01-2023 12:55:34.572 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate.registerRepositoriesIn - Finished Spring Data repository scanning in 117 ms. Found 2 JPA repository interfaces.
+18-01-2023 12:55:35.598 [main] INFO  o.h.jpa.internal.util.LogHelper.logPersistenceUnitInformation - HHH000204: Processing PersistenceUnitInfo [name: default]
+18-01-2023 12:55:35.701 [main] INFO  org.hibernate.Version.logVersion - HHH000412: Hibernate ORM core version 5.6.14.Final
+18-01-2023 12:55:36.053 [main] INFO  o.h.annotations.common.Version.<clinit> - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+18-01-2023 12:55:36.307 [main] INFO  com.zaxxer.hikari.HikariDataSource.getConnection - HikariPool-1 - Starting...
+18-01-2023 12:55:37.150 [main] INFO  com.zaxxer.hikari.HikariDataSource.getConnection - HikariPool-1 - Start completed.
+18-01-2023 12:55:37.182 [main] INFO  org.hibernate.dialect.Dialect.<init> - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+18-01-2023 12:55:39.371 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator.initiateService - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+18-01-2023 12:55:39.398 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean.buildNativeEntityManagerFactory - Initialized JPA EntityManagerFactory for persistence unit 'default'
+18-01-2023 12:55:42.112 [main] INFO  i.p.S.SpringTgBotApplication.logStarted - Started SpringTgBotApplication in 12.789 seconds (JVM running for 18.033)
+18-01-2023 12:55:53.167 [d1ct1onary_bot Telegram Executor] INFO  i.p.SpringTgBot.service.TelegramBot.onUpdateReceived - Message from Yauheni, with text: /help
+18-01-2023 12:55:53.495 [d1ct1onary_bot Telegram Executor] INFO  i.p.SpringTgBot.service.TelegramBot.sendAnswer - Send answer
+18-01-2023 13:00:01.431 [main] INFO  i.p.S.SpringTgBotApplication.logStarting - Starting SpringTgBotApplication using Java 11.0.12 on MasterComputers with PID 20444 (D:\project\SpringTgBot\target\classes started by User in D:\project\SpringTgBot)
+18-01-2023 13:00:01.443 [main] INFO  i.p.S.SpringTgBotApplication.logStartupProfileInfo - No active profile set, falling back to 1 default profile: "default"
+18-01-2023 13:00:07.676 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate.registerRepositoriesIn - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+18-01-2023 13:00:09.091 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate.registerRepositoriesIn - Finished Spring Data repository scanning in 1143 ms. Found 2 JPA repository interfaces.
+18-01-2023 13:00:11.988 [main] INFO  o.h.jpa.internal.util.LogHelper.logPersistenceUnitInformation - HHH000204: Processing PersistenceUnitInfo [name: default]
+18-01-2023 13:00:12.207 [main] INFO  org.hibernate.Version.logVersion - HHH000412: Hibernate ORM core version 5.6.14.Final
+18-01-2023 13:00:12.858 [main] INFO  o.h.annotations.common.Version.<clinit> - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+18-01-2023 13:00:13.538 [main] INFO  com.zaxxer.hikari.HikariDataSource.getConnection - HikariPool-1 - Starting...
+18-01-2023 13:00:15.164 [main] INFO  com.zaxxer.hikari.HikariDataSource.getConnection - HikariPool-1 - Start completed.
+18-01-2023 13:00:15.215 [main] INFO  org.hibernate.dialect.Dialect.<init> - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+18-01-2023 13:00:19.047 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator.initiateService - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+18-01-2023 13:00:19.083 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean.buildNativeEntityManagerFactory - Initialized JPA EntityManagerFactory for persistence unit 'default'
+18-01-2023 13:00:23.861 [main] INFO  i.p.S.SpringTgBotApplication.logStarted - Started SpringTgBotApplication in 24.557 seconds (JVM running for 29.775)
+18-01-2023 13:00:47.661 [d1ct1onary_bot Telegram Executor] INFO  i.p.SpringTgBot.service.TelegramBot.onUpdateReceived - Message from Yauheni, with text: /add dog -dog
+18-01-2023 13:00:47.673 [d1ct1onary_bot Telegram Executor] INFO  i.p.SpringTgBot.service.TelegramBot.checkWords - Check word(dog - dog) for accuracy
+18-01-2023 13:00:47.943 [d1ct1onary_bot Telegram Executor] INFO  i.p.SpringTgBot.service.TelegramBot.sendAnswer - Send answer
+18-01-2023 13:03:36.608 [d1ct1onary_bot Telegram Executor] INFO  i.p.SpringTgBot.service.TelegramBot.onUpdateReceived - Message from Yauheni, with text: /remove dog - dog
+18-01-2023 13:03:36.610 [d1ct1onary_bot Telegram Executor] INFO  i.p.SpringTgBot.service.TelegramBot.checkWords - Check word(dog - dog) for accuracy
+18-01-2023 13:03:36.612 [d1ct1onary_bot Telegram Executor] WARN  i.p.SpringTgBot.service.TelegramBot.onUpdateReceived - There was an error: Wrong format for entering words. Check if the command with the pattern is entered correctly and try again.
+18-01-2023 13:03:36.881 [d1ct1onary_bot Telegram Executor] INFO  i.p.SpringTgBot.service.TelegramBot.sendAnswer - Send answer
+18-01-2023 13:05:41.821 [main] INFO  i.p.S.SpringTgBotApplication.logStarting - Starting SpringTgBotApplication using Java 11.0.12 on MasterComputers with PID 23848 (D:\project\SpringTgBot\target\classes started by User in D:\project\SpringTgBot)
+18-01-2023 13:05:41.837 [main] INFO  i.p.S.SpringTgBotApplication.logStartupProfileInfo - No active profile set, falling back to 1 default profile: "default"
+18-01-2023 13:05:44.124 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate.registerRepositoriesIn - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+18-01-2023 13:05:44.346 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate.registerRepositoriesIn - Finished Spring Data repository scanning in 193 ms. Found 2 JPA repository interfaces.
+18-01-2023 13:05:45.376 [main] INFO  o.h.jpa.internal.util.LogHelper.logPersistenceUnitInformation - HHH000204: Processing PersistenceUnitInfo [name: default]
+18-01-2023 13:05:45.482 [main] INFO  org.hibernate.Version.logVersion - HHH000412: Hibernate ORM core version 5.6.14.Final
+18-01-2023 13:05:45.854 [main] INFO  o.h.annotations.common.Version.<clinit> - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+18-01-2023 13:05:46.300 [main] INFO  com.zaxxer.hikari.HikariDataSource.getConnection - HikariPool-1 - Starting...
+18-01-2023 13:05:47.306 [main] INFO  com.zaxxer.hikari.HikariDataSource.getConnection - HikariPool-1 - Start completed.
+18-01-2023 13:05:47.345 [main] INFO  org.hibernate.dialect.Dialect.<init> - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+18-01-2023 13:05:49.681 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator.initiateService - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+18-01-2023 13:05:49.711 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean.buildNativeEntityManagerFactory - Initialized JPA EntityManagerFactory for persistence unit 'default'
+18-01-2023 13:05:52.498 [main] INFO  i.p.S.SpringTgBotApplication.logStarted - Started SpringTgBotApplication in 13.945 seconds (JVM running for 18.9)
+18-01-2023 13:06:18.754 [d1ct1onary_bot Telegram Executor] INFO  i.p.SpringTgBot.service.TelegramBot.onUpdateReceived - Message from Yauheni, with text: /add dog - dog
+18-01-2023 13:06:18.768 [d1ct1onary_bot Telegram Executor] INFO  i.p.SpringTgBot.service.TelegramBot.checkWords - Check word(dog - dog) for accuracy
+18-01-2023 13:06:18.769 [d1ct1onary_bot Telegram Executor] WARN  i.p.SpringTgBot.service.TelegramBot.onUpdateReceived - Wrong format for entering words. Check if the command with the pattern is entered correctly and try again.
+18-01-2023 13:06:18.864 [d1ct1onary_bot Telegram Executor] INFO  i.p.SpringTgBot.service.TelegramBot.sendAnswer - Send answer
+18-01-2023 13:07:47.120 [d1ct1onary_bot Telegram Executor] INFO  i.p.SpringTgBot.service.TelegramBot.onUpdateReceived - Message from Yauheni, with text: /remove dog - dog
+18-01-2023 13:07:47.121 [d1ct1onary_bot Telegram Executor] INFO  i.p.SpringTgBot.service.TelegramBot.checkWords - Check word(dog - dog) for accuracy
+18-01-2023 13:07:47.121 [d1ct1onary_bot Telegram Executor] WARN  i.p.SpringTgBot.service.TelegramBot.onUpdateReceived - Wrong format for entering words. Check if the command with the pattern is entered correctly and try again.
+18-01-2023 13:07:47.377 [d1ct1onary_bot Telegram Executor] INFO  i.p.SpringTgBot.service.TelegramBot.sendAnswer - Send answer

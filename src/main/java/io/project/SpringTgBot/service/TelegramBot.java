@@ -96,6 +96,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                     var answer = addNewWordToDictionary(words, chatId);
                     sendAnswer(chatId, answer);
                 } catch (BadWordFormat ex) {
+                    log.warn(ex.getMessage());
                     sendAnswer(chatId, ex.getMessage());
                 }
             } else if (message.contains(REMOVE_COMMAND)) {
@@ -104,7 +105,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                     var answer = removeWordFromUserDictionary(words, chatId);
                     sendAnswer(chatId, answer);
                 } catch (BadWordFormat ex) {
-                    log.warn("There was an error: " + ex.getMessage());
+                    log.warn(ex.getMessage());
                     sendAnswer(chatId, ex.getMessage());
                 }
             } else if (message.equals(QUIZ_COMMAND)) {
