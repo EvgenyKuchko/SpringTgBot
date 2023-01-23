@@ -1,0 +1,130 @@
+package io.project.SpringTgBot.service;
+
+import io.project.SpringTgBot.model.Word;
+import io.project.SpringTgBot.repository.WordRepository;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
+public class WordServiceTest {
+    @InjectMocks
+    private WordService wordService;
+    @Mock
+    private WordRepository wordRepository;
+
+    static List<Word> words;
+
+    @BeforeAll
+    static void setUp() {
+        words = new LinkedList<>();
+        Word w1 = new Word();
+        w1.setEnglish("hello");
+        w1.setRussian("привет");
+        Word w2 = new Word();
+        w2.setEnglish("bye");
+        w2.setRussian("пока");
+        Word w3 = new Word();
+        w3.setEnglish("sun");
+        w3.setRussian("солнце");
+        Word w4 = new Word();
+        w4.setEnglish("moon");
+        w4.setRussian("луна");
+        Word w5 = new Word();
+        w5.setEnglish("cat");
+        w5.setRussian("кот");
+        words.add(w1);
+        words.add(w2);
+        words.add(w3);
+        words.add(w4);
+        words.add(w5);
+    }
+
+    @Test
+    public void isWordInBotDictionary_ReturnTrue() {
+        var english = "hello";
+        var russian = "привет";
+        Word word = new Word();
+        word.setEnglish(english);
+        word.setRussian(russian);
+        var listOfWords = words.stream().filter(w -> w.getEnglish().equals(english)).collect(Collectors.toList());
+
+        when(wordRepository.findAllByEnglish(english)).thenReturn(listOfWords);
+        var result = wordService.isWordInBotDictionary(english, russian);
+
+        assertFalse(listOfWords.isEmpty());
+        assertTrue(result);
+    }
+
+    @Test
+    public void isWordInBotDictionary_ReturnFalse() {
+        var english = "hello";
+        var russian = "здравствуйте";
+        Word word = new Word();
+        word.setEnglish(english);
+        word.setRussian(russian);
+        var listOfWords = words.stream().filter(w -> w.getEnglish().equals(english)).collect(Collectors.toList());
+
+        when(wordRepository.findAllByEnglish(english)).thenReturn(listOfWords);
+        var result = wordService.isWordInBotDictionary(english, russian);
+
+        assertFalse(listOfWords.isEmpty());
+        assertFalse(result);
+    }
+
+    @Test
+    public void isWordInBotDictionary_ReturnFalseToo() {
+        var english = "dog";
+        var russian = "собака";
+        Word word = new Word();
+        word.setEnglish(english);
+        word.setRussian(russian);
+        var listOfWords = words.stream().filter(w -> w.getEnglish().equals(english)).collect(Collectors.toList());
+
+        when(wordRepository.findAllByEnglish(english)).thenReturn(listOfWords);
+        var result = wordService.isWordInBotDictionary(english, russian);
+
+        assertTrue(listOfWords.isEmpty());
+        assertFalse(result);
+    }
+
+    @Test
+    public void getWordFromBotDictionary() {
+        var english = "moon";
+        var russian = "луна";
+        Word word = new Word();
+        word.setRussian(russian);
+        word.setEnglish(english);
+
+        when(wordRepository.findByEnglishAndRussian(english, russian)).thenReturn(word);
+        var result = wordService.getWordFromBotDictionary(english, russian);
+
+        assertEquals(word, result);
+    }
+
+    @Test
+    public void addNewWordToDictionary() {
+        var english = "wave";
+        var russian = "волна";
+
+        wordService.addNewWordToDictionary(english, russian);
+
+        ArgumentCaptor<Word> captor = ArgumentCaptor.forClass(Word.class);
+        verify(wordRepository).save(captor.capture());
+        Word word = captor.getValue();
+        assertEquals(english, word.getEnglish());
+        assertEquals(russian, word.getRussian());
+    }
+}
