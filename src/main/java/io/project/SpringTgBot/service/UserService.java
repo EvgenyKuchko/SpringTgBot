@@ -57,18 +57,18 @@ public class UserService {
     @Transactional
     public String getAllWords(long chatId) {
         User user = userRepository.getUserById(chatId);
-        String words = ":book: List of your words:\n";
+        StringBuilder words = new StringBuilder(":book: List of your words:\n");
         List<Word> list = user.getWords();
         if (!list.isEmpty()) {
             for (Word w : list) {
-                words += "\n" + w.getEnglish() + " - " + w.getRussian();
+                words.append("\n").append(w.getEnglish()).append(" - ").append(w.getRussian());
             }
             log.info("Get all words from " + user.getFirstName() + "'s dictionary");
         } else {
-            words += "Your dictionary is empty";
+            words.append("Your dictionary is empty");
             log.info(user.getFirstName() + "'s dictionary is empty");
         }
-        return words;
+        return String.valueOf(words);
     }
 
     @Transactional
