@@ -179,7 +179,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     public void checkWords(String[] words) throws BadWordFormat {
-        log.info("Check word(" + words[0] + " - " + words[1] + ") for accuracy");
+        log.info("Check word for accuracy");
         if (words.length == 2) {
             if (words[0].matches("[a-z]+") && words[1].matches("[а-я]+")) {
                 return;
