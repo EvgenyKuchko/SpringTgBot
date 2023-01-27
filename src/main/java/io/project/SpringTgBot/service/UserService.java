@@ -65,7 +65,7 @@ public class UserService {
             }
             log.info("Get all words from " + user.getFirstName() + "'s dictionary");
         } else {
-            words.append("Your dictionary is empty");
+            words.append("\n").append("Your dictionary is empty");
             log.info(user.getFirstName() + "'s dictionary is empty");
         }
         return String.valueOf(words);
