@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Slf4j
 @Service
 public class WordService {
@@ -16,13 +18,13 @@ public class WordService {
 
     @Transactional
     public boolean isWordInBotDictionary(String english, String russian) {
-        var words = wordRepository.findAllByEnglish(english);
+        List<Word> words = wordRepository.findAllByEnglish(english);
         log.info("Check is word(" + english + " - " + russian + ") in the bot dictionary or not");
         if (words.isEmpty()) {
             log.info("Word isn't in the bot dictionary");
             return false;
         }
-        var result = false;
+        boolean result = false;
         for (Word w : words) {
             if (w.getRussian().equals(russian)) {
                 result = true;

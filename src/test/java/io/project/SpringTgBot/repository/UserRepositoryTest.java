@@ -55,14 +55,14 @@ public class UserRepositoryTest {
 
     @Test
     public void existById_ShouldReturnTrue() {
-        var expectTrue = userRepository.existsById(ID);
+        boolean expectTrue = userRepository.existsById(ID);
 
         assertTrue(expectTrue);
     }
 
     @Test
     public void existById_ShouldReturnFalse() {
-        var expectFalse = userRepository.existsById(2L);
+        boolean expectFalse = userRepository.existsById(2L);
 
         assertFalse(expectFalse);
     }

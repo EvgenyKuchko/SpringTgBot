@@ -35,7 +35,7 @@ public class UserService {
     public boolean isWordInUserDictionary(long chatId, String english, String russian) {
         log.info("Check word: " + english + " - " + russian + ", is in the user dictionary");
         User user = userRepository.getUserById(chatId);
-        var words = user.getWords();
+        List<Word> words = user.getWords();
         for (Word w : words) {
             if (w.getEnglish().equals(english) && w.getRussian().equals(russian)) {
                 log.info("Word is in the user dictionary");

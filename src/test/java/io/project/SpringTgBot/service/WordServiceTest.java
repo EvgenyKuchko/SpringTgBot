@@ -54,15 +54,15 @@ public class WordServiceTest {
 
     @Test
     public void isWordInBotDictionary_ReturnTrue() {
-        var english = "hello";
-        var russian = "привет";
+        String english = "hello";
+        String russian = "привет";
         Word word = new Word();
         word.setEnglish(english);
         word.setRussian(russian);
-        var listOfWords = words.stream().filter(w -> w.getEnglish().equals(english)).collect(Collectors.toList());
+        List<Word> listOfWords = words.stream().filter(w -> w.getEnglish().equals(english)).collect(Collectors.toList());
 
         when(wordRepository.findAllByEnglish(english)).thenReturn(listOfWords);
-        var result = wordService.isWordInBotDictionary(english, russian);
+        boolean result = wordService.isWordInBotDictionary(english, russian);
 
         assertFalse(listOfWords.isEmpty());
         assertTrue(result);
@@ -70,15 +70,15 @@ public class WordServiceTest {
 
     @Test
     public void isWordInBotDictionary_ReturnFalse() {
-        var english = "hello";
-        var russian = "здравствуйте";
+        String english = "hello";
+        String russian = "здравствуйте";
         Word word = new Word();
         word.setEnglish(english);
         word.setRussian(russian);
-        var listOfWords = words.stream().filter(w -> w.getEnglish().equals(english)).collect(Collectors.toList());
+        List<Word> listOfWords = words.stream().filter(w -> w.getEnglish().equals(english)).collect(Collectors.toList());
 
         when(wordRepository.findAllByEnglish(english)).thenReturn(listOfWords);
-        var result = wordService.isWordInBotDictionary(english, russian);
+        boolean result = wordService.isWordInBotDictionary(english, russian);
 
         assertFalse(listOfWords.isEmpty());
         assertFalse(result);
@@ -86,15 +86,15 @@ public class WordServiceTest {
 
     @Test
     public void isWordInBotDictionary_ReturnFalseToo() {
-        var english = "dog";
-        var russian = "собака";
+        String english = "dog";
+        String russian = "собака";
         Word word = new Word();
         word.setEnglish(english);
         word.setRussian(russian);
-        var listOfWords = words.stream().filter(w -> w.getEnglish().equals(english)).collect(Collectors.toList());
+        List<Word> listOfWords = words.stream().filter(w -> w.getEnglish().equals(english)).collect(Collectors.toList());
 
         when(wordRepository.findAllByEnglish(english)).thenReturn(listOfWords);
-        var result = wordService.isWordInBotDictionary(english, russian);
+        boolean result = wordService.isWordInBotDictionary(english, russian);
 
         assertTrue(listOfWords.isEmpty());
         assertFalse(result);
@@ -102,22 +102,22 @@ public class WordServiceTest {
 
     @Test
     public void getWordFromBotDictionary() {
-        var english = "moon";
-        var russian = "луна";
+        String english = "moon";
+        String russian = "луна";
         Word word = new Word();
         word.setRussian(russian);
         word.setEnglish(english);
 
         when(wordRepository.findByEnglishAndRussian(english, russian)).thenReturn(word);
-        var result = wordService.getWordFromBotDictionary(english, russian);
+        Word result = wordService.getWordFromBotDictionary(english, russian);
 
         assertEquals(word, result);
     }
 
     @Test
     public void addNewWordToDictionary() {
-        var english = "wave";
-        var russian = "волна";
+        String english = "wave";
+        String russian = "волна";
 
         wordService.addNewWordToDictionary(english, russian);
 

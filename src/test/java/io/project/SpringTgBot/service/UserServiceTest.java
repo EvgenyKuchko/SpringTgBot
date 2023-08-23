@@ -29,8 +29,8 @@ public class UserServiceTest {
 
     @BeforeAll
     static void setUp() {
-        var id = 123;
-        var name = "user";
+        long id = 123;
+        String name = "user";
         List<Word> words = new LinkedList<>();
         Word w1 = new Word();
         w1.setEnglish("hello");
@@ -69,8 +69,8 @@ public class UserServiceTest {
 
     @Test
     public void addNewUser_UserIsNotExist() {
-        var name = "user";
-        var chatId = 123L;
+        String name = "user";
+        long chatId = 123L;
 
         when(userRepository.existsById(user.getId())).thenReturn(false);
         userService.addNewUser(user.getId(), user.getFirstName());
@@ -84,22 +84,22 @@ public class UserServiceTest {
 
     @Test
     public void isWordInUserDictionary_ReturnTrue() {
-        var english = "cat";
-        var russian = "кот";
+        String english = "cat";
+        String russian = "кот";
 
         when(userRepository.getUserById(user.getId())).thenReturn(user);
-        var result = userService.isWordInUserDictionary(user.getId(), english, russian);
+        boolean result = userService.isWordInUserDictionary(user.getId(), english, russian);
 
         assertTrue(result);
     }
 
     @Test
     public void isWordInUserDictionary_ReturnFalse() {
-        var english = "shark";
-        var russian = "акула";
+        String english = "shark";
+        String russian = "акула";
 
         when(userRepository.getUserById(user.getId())).thenReturn(user);
-        var result = userService.isWordInUserDictionary(user.getId(), english, russian);
+        boolean result = userService.isWordInUserDictionary(user.getId(), english, russian);
 
         assertFalse(result);
     }
@@ -121,7 +121,7 @@ public class UserServiceTest {
     @Test
     public void getAllWords_WordsIsNotEmpty() {
         when(userRepository.getUserById(user.getId())).thenReturn(user);
-        var result = userService.getAllWords(user.getId());
+        String result = userService.getAllWords(user.getId());
 
         assertFalse(result.isEmpty());
         assertFalse(result.contains("Your dictionary is empty"));
@@ -135,7 +135,7 @@ public class UserServiceTest {
         user.setWords(words);
 
         when(userRepository.getUserById(user.getId())).thenReturn(user);
-        var result = userService.getAllWords(user.getId());
+        String result = userService.getAllWords(user.getId());
 
         assertFalse(result.isEmpty());
         assertTrue(result.contains("Your dictionary is empty"));
@@ -143,8 +143,8 @@ public class UserServiceTest {
 
     @Test
     public void removeWord() {
-        var english = "pilot";
-        var russian = "пилот";
+        String english = "pilot";
+        String russian = "пилот";
         Word removedWord = new Word();
         removedWord.setRussian(russian);
         removedWord.setEnglish(english);
@@ -159,17 +159,17 @@ public class UserServiceTest {
     @Test
     public void getWordsForQuiz() {
         when(userRepository.getUserById(user.getId())).thenReturn(user);
-        var listOfWords = userService.getWordsForQuiz(user.getId());
+        List<Word> listOfWords = userService.getWordsForQuiz(user.getId());
 
         assertEquals(5, listOfWords.size());
     }
 
     @Test
     public void getSizeOfDictionary() {
-        var expectedSize = user.getWords().size();
+        int expectedSize = user.getWords().size();
 
         when(userRepository.getUserById(user.getId())).thenReturn(user);
-        var result = userService.getSizeOfDictionary(user.getId());
+        int result = userService.getSizeOfDictionary(user.getId());
 
         assertEquals(expectedSize, result);
     }

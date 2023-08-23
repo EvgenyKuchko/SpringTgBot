@@ -77,9 +77,9 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
-            var message = update.getMessage().getText();
-            var firstname = update.getMessage().getChat().getFirstName();
-            var chatId = update.getMessage().getChatId();
+            String message = update.getMessage().getText();
+            String firstname = update.getMessage().getChat().getFirstName();
+            long chatId = update.getMessage().getChatId();
             log.info("Message from " + firstname + ", with text: " + message);
 
             if (message.equals(START_COMMAND)) {
@@ -88,12 +88,12 @@ public class TelegramBot extends TelegramLongPollingBot {
             } else if (message.equals(HELP_COMMAND)) {
                 sendAnswer(chatId, HELP);
             } else if (message.equals(GET_COMMAND)) {
-                var answer = userService.getAllWords(chatId);
+                String answer = userService.getAllWords(chatId);
                 sendAnswer(chatId, answer);
             } else if (message.contains(ADD_COMMAND)) {
                 try {
-                    var words = parseMessage(message, ADD_COMMAND);
-                    var answer = addNewWordToDictionary(words, chatId);
+                    String[] words = parseMessage(message, ADD_COMMAND);
+                    String answer = addNewWordToDictionary(words, chatId);
                     sendAnswer(chatId, answer);
                 } catch (BadWordFormat ex) {
                     log.warn(ex.getMessage());
@@ -101,8 +101,8 @@ public class TelegramBot extends TelegramLongPollingBot {
                 }
             } else if (message.contains(REMOVE_COMMAND)) {
                 try {
-                    var words = parseMessage(message, REMOVE_COMMAND);
-                    var answer = removeWordFromUserDictionary(words, chatId);
+                    String[] words = parseMessage(message, REMOVE_COMMAND);
+                    String answer = removeWordFromUserDictionary(words, chatId);
                     sendAnswer(chatId, answer);
                 } catch (BadWordFormat ex) {
                     log.warn(ex.getMessage());
@@ -116,8 +116,8 @@ public class TelegramBot extends TelegramLongPollingBot {
                     countOfQuestion = 0;
                     countOfCorrectAnswers = 0;
                     wordsForQuiz = new LinkedList<>(userService.getWordsForQuiz(chatId));
-                    var questionWord = getQuestionWord();
-                    var variants = getVariants(questionWord);
+                    Word questionWord = getQuestionWord();
+                    String[] variants = getVariants(questionWord);
                     sendQuestion(chatId, questionWord, variants);
                     countOfQuestion++;
                 }
@@ -127,10 +127,10 @@ public class TelegramBot extends TelegramLongPollingBot {
         } else if (update.hasCallbackQuery()) {
             //получаем id сообщение которое будет изменено
             log.info("Get answer to the question");
-            var callBackData = update.getCallbackQuery().getData();
-            var english = update.getCallbackQuery().getMessage().getText();
-            var messageId = update.getCallbackQuery().getMessage().getMessageId();
-            var idOfChat = update.getCallbackQuery().getMessage().getChatId();
+            String callBackData = update.getCallbackQuery().getData();
+            String english = update.getCallbackQuery().getMessage().getText();
+            int messageId = update.getCallbackQuery().getMessage().getMessageId();
+            long idOfChat = update.getCallbackQuery().getMessage().getChatId();
 
             if (answerIsCorrect(english, callBackData)) {
                 countOfCorrectAnswers++;
@@ -150,7 +150,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     private void startCommandAnswer(long chatId, String name) {
-        var answer = "Hello, " + name + "! Welcome to Dictionary Bot.:wave:\n\n" +
+        String answer = "Hello, " + name + "! Welcome to Dictionary Bot.:wave:\n\n" +
                 HELP;
         sendAnswer(chatId, answer);
         log.info(name + " started chat");
@@ -184,7 +184,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             if (words[0].matches("[a-z]+") && words[1].matches("[а-я]+")) {
                 return;
             } else if (words[1].matches("[a-z]+") && words[0].matches("[а-я]+")) {
-                var x = words[0];
+                String x = words[0];
                 words[0] = words[1];
                 words[1] = x;
                 return;
@@ -229,7 +229,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private String[] getVariants(Word questionWord) {
         log.info("Get variants for word " + questionWord);
-        var words = new ArrayList<>(wordsForQuiz);
+        List<Word> words = new ArrayList<>(wordsForQuiz);
         words.remove(questionWord);
         Collections.shuffle(words);
         String[] variants = new String[3];
@@ -245,7 +245,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         Random rnd = new Random();
         for (int i = 0; i < arr.length; i++) {
             int index = rnd.nextInt(i + 1);
-            var a = arr[index];
+            String a = arr[index];
             arr[index] = arr[i];
             arr[i] = a;
         }
@@ -280,8 +280,8 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     private void nextQuestion(long chatId, int messageId) {
-        var questionWord = getQuestionWord();
-        var variants = getVariants(questionWord);
+        Word questionWord = getQuestionWord();
+        String[] variants = getVariants(questionWord);
         EditMessageText message = new EditMessageText();
         message.setChatId(String.valueOf(chatId));
         message.setText(questionWord.getEnglish());
@@ -316,7 +316,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
         List<InlineKeyboardButton> row = new ArrayList<>();
         for (String variant : variants) {
-            var button = new InlineKeyboardButton();
+            InlineKeyboardButton button = new InlineKeyboardButton();
             button.setText(variant);
             button.setCallbackData(variant);
             row.add(button);
