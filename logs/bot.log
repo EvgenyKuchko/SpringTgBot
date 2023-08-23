@@ -185,3 +185,28 @@ You may wish to exclude one of them to ensure predictable runtime behavior
 23-08-2023 11:21:58.513 [d1ct1onary_bot Telegram Executor] INFO  i.p.SpringTgBot.service.TelegramBot.answerIsCorrect - Answer is correct
 23-08-2023 11:21:58.513 [d1ct1onary_bot Telegram Executor] INFO  i.p.SpringTgBot.service.TelegramBot.onUpdateReceived - Count of correct answers: 5
 23-08-2023 11:21:58.514 [d1ct1onary_bot Telegram Executor] INFO  i.p.SpringTgBot.service.TelegramBot.sendResultOfQuiz - Send result of quiz
+23-08-2023 11:26:20.199 [main] WARN  o.s.b.t.j.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer.logDuplicateJsonObjectsWarning - 
+
+Found multiple occurrences of org.json.JSONObject on the class path:
+
+	jar:file:/C:/Users/User/.m2/repository/org/json/json/20180813/json-20180813.jar!/org/json/JSONObject.class
+	jar:file:/C:/Users/User/.m2/repository/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar!/org/json/JSONObject.class
+
+You may wish to exclude one of them to ensure predictable runtime behavior
+
+23-08-2023 11:26:20.320 [main] INFO  i.p.S.SpringTgBotApplicationTests.logStarting - Starting SpringTgBotApplicationTests using Java 1.8.0_291 on MasterComputers with PID 10976 (started by User in D:\project\SpringTgBot)
+23-08-2023 11:26:20.323 [main] INFO  i.p.S.SpringTgBotApplicationTests.logStartupProfileInfo - No active profile set, falling back to 1 default profile: "default"
+23-08-2023 11:26:22.860 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate.registerRepositoriesIn - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+23-08-2023 11:26:23.276 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate.registerRepositoriesIn - Finished Spring Data repository scanning in 301 ms. Found 2 JPA repository interfaces.
+23-08-2023 11:26:26.366 [main] INFO  o.h.jpa.internal.util.LogHelper.logPersistenceUnitInformation - HHH000204: Processing PersistenceUnitInfo [name: default]
+23-08-2023 11:26:26.656 [main] INFO  org.hibernate.Version.logVersion - HHH000412: Hibernate ORM core version 5.6.14.Final
+23-08-2023 11:26:26.839 [main] INFO  o.h.annotations.common.Version.<clinit> - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+23-08-2023 11:26:28.933 [main] INFO  com.zaxxer.hikari.HikariDataSource.getConnection - HikariPool-1 - Starting...
+23-08-2023 11:26:32.840 [main] INFO  com.zaxxer.hikari.HikariDataSource.getConnection - HikariPool-1 - Start completed.
+23-08-2023 11:26:32.980 [main] INFO  org.hibernate.dialect.Dialect.<init> - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+23-08-2023 11:26:39.137 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator.initiateService - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+23-08-2023 11:26:39.174 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean.buildNativeEntityManagerFactory - Initialized JPA EntityManagerFactory for persistence unit 'default'
+23-08-2023 11:26:47.171 [main] INFO  i.p.S.SpringTgBotApplicationTests.logStarted - Started SpringTgBotApplicationTests in 29.153 seconds (JVM running for 40.095)
+23-08-2023 11:26:49.797 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean.destroy - Closing JPA EntityManagerFactory for persistence unit 'default'
+23-08-2023 11:26:49.808 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource.close - HikariPool-1 - Shutdown initiated...
+23-08-2023 11:26:49.836 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource.close - HikariPool-1 - Shutdown completed.
