@@ -11,7 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,7 +31,7 @@ public class UserServiceTest {
     static void setUp() {
         long id = 123;
         String name = "user";
-        List<Word> words = new LinkedList<>();
+        List<Word> words = new ArrayList<>();
         Word w1 = new Word();
         w1.setEnglish("hello");
         w1.setRussian("привет");
@@ -131,7 +131,7 @@ public class UserServiceTest {
     @Test
     public void getAllWords_WordsIsEmpty() {
         User user = new User();
-        List<Word> words = new LinkedList<>();
+        List<Word> words = new ArrayList<>();
         user.setWords(words);
 
         when(userRepository.getUserById(user.getId())).thenReturn(user);
