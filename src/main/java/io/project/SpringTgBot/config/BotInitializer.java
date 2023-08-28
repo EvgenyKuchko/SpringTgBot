@@ -16,6 +16,7 @@ import java.net.Socket;
 @Component
 public class BotInitializer {
 
+    @Autowired
     private BotConfig botConfig;
 
     @Autowired
