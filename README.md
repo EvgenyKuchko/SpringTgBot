@@ -6,4 +6,4 @@ functions:
  - Generating a test from the words in the dictionary with answer options
 
 Technologies:
-Java 11, Telegram API, Spring Framework, MySQL, JUnit, Lombok
+Java 8, Telegram API, Spring Framework, MySQL, JUnit, Lombok
