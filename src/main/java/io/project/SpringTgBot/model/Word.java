@@ -3,7 +3,7 @@ package io.project.SpringTgBot.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,5 +16,5 @@ public class Word {
     private String english;
     private String russian;
     @ManyToMany(mappedBy = "words", fetch = FetchType.EAGER)
-    private List<User> users = new LinkedList<>();
+    private List<User> users = new ArrayList<>();
 }

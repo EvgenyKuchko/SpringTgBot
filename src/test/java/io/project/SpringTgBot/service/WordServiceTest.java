@@ -10,7 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,7 +29,7 @@ public class WordServiceTest {
 
     @BeforeAll
     static void setUp() {
-        words = new LinkedList<>();
+        words = new ArrayList<>();
         Word w1 = new Word();
         w1.setEnglish("hello");
         w1.setRussian("привет");
