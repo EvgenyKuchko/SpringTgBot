@@ -1,7 +1,6 @@
 package io.project.SpringTgBot.config;
 
 import io.project.SpringTgBot.service.TelegramBot;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -10,9 +9,14 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
-@Slf4j
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
 @Component
 public class BotInitializer {
+
+    private BotConfig botConfig;
 
     @Autowired
     private TelegramBot telegramBot;
@@ -23,7 +27,15 @@ public class BotInitializer {
         try {
             telegramBotsApi.registerBot(telegramBot);
         } catch (TelegramApiException ex) {
-            log.error("There was an error: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+
+        try (ServerSocket serverSocket = new ServerSocket(Integer.parseInt(botConfig.getPort()))) {
+            while (true) {
+                Socket clientSocket = serverSocket.accept();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

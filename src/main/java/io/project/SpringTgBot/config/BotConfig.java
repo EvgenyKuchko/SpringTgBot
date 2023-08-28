@@ -14,4 +14,6 @@ public class BotConfig {
     private String botName;
     @Value("${bot.token}")
     private String botToken;
+    @Value("${server.port}")
+    private String port;
 }
